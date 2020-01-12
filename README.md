@@ -1,7 +1,7 @@
 # Django Rest Framework
 Practicing how DRF works following the official documentation. 
 
-# Concept Cleared ON
+## Concept Cleared ON
 ```
 -- Serializers
 -- Views
