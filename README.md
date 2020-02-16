@@ -1,11 +1,12 @@
-# Django Rest Framework
-Practicing how DRF works following the official documentation. 
+# Django, DRF, Unit Test
+Setup Django project with everything you needs to have
 
 ## Concept Cleared ON
 ```
 -- Serializers
+-- Serializers
 -- Views
--- URLs
+-- Routing
 -- Pagination
 -- Settings
 -- Testing API
