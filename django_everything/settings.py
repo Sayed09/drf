@@ -74,7 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'django_erp.urls'
+ROOT_URLCONF = 'django_everything.urls'
 
 TEMPLATES = [
     {
@@ -92,7 +92,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'django_erp.wsgi.application'
+WSGI_APPLICATION = 'django_everything.wsgi.application'
 # FIREBASE_GET_TOKEN_ID = env("FIREBASE_GET_TOKEN_ID")
 # FIREBASE_GET_REFRESH_TOKEN = env("FIREBASE_GET_REFRESH_TOKEN")
 # FIREBASE_WEB_KEY = env("FIREBASE_WEB_KEY")

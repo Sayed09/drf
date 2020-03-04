@@ -1,12 +1,18 @@
 from rest_framework import serializers
-from apps.snippets.models import Snippet, User
+from .models import Snippet, User
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "username")
 
 
 class SnippetSerializer(serializers.ModelSerializer):
-    owner_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=True), source='owner',
-                                                  write_only=True)
+    owner = UserSerializer(read_only=True)
+    owner_id = serializers.PrimaryKeyRelatedField(source='owner', queryset=User.objects.all(), write_only=True)
 
     class Meta:
         model = Snippet
-        fields = "__all__"
-        extra_fields = ["owner_id"]
+        fields = ["id", "title", "owner", "owner_id"]
+        # extra_fields = ["owner_id"]
