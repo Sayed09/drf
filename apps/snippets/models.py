@@ -1,12 +1,45 @@
-from random import uniform
-
-from django.db import models
 from django.contrib.postgres.indexes import BrinIndex, GinIndex
-from apps.users.models import User
 from django.utils.encoding import smart_text as smart_unicode
 from django.utils.translation import ugettext_lazy as _
-
 from django.utils import timezone
+from django.db import models
+from django.db.models.query import QuerySet
+from random import uniform
+
+from apps.users.models import User
+
+
+class SnippetQuerySet(QuerySet):
+
+    def live(self):
+        return self.filter(status=True)
+
+    def get_target_hulk(self):
+        return self.filter(title="Hulk287")
+
+
+class SnippetManager(models.Manager):
+
+    def get_query_set(self):
+        return SnippetQuerySet(self.model)
+
+    def __getattr__(self, attr, *args):
+        if attr.startswith("_"):
+            raise AttributeError
+        return getattr(self.get_query_set(), attr, *args)
+
+    def create_snippet(self, *args, **kwargs):
+        snippet = Snippet()
+        snippet.title = kwargs.get("title")
+        snippet.owner_id = kwargs.get("owner_id")
+        Snippet.objects.create(snippet)
+
+    def update_snippet(self, *args, **kwargs):
+        print(kwargs)
+        pass
+        # snippet = Snippet.objects.get(id=kwargs.get("id"))
+        # snippet.title = kwargs.get("title")
+        # snippet.save()
 
 
 class Snippet(models.Model):
@@ -24,6 +57,8 @@ class Snippet(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField()
     status = models.BooleanField(default=True)
+
+    objects = SnippetManager()
 
     class Meta:
         ordering = ['created']
@@ -44,10 +79,7 @@ class Snippet(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is None:
-            # self.title = self.title + str(int(uniform(1, 10000)))
+            self.title = self.title + str(int(uniform(1, 10000)))
             self.created = timezone.now()
         self.modified = timezone.now()
-        super().save(*args, **kwargs)
-
-    def get_snippet_detail(self):
-        return self.title + ' belongs to ' + self.language + '.'
+        super(Snippet, self).save(*args, **kwargs)
